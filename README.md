@@ -1,6 +1,13 @@
 # devtools_project
 Final Project In Devtools Course
 
+TL;DR: 
+
+    1) Ensure that the scripts have execute permissions (chmod +x scriptname.sh).
+    2) Download the project
+    3) Begin with the "setup.sh" script and then "restore.sh" if you want to load our exsiting data
+
+
 a. We are Amit Bar-Kama, Software Engineering student and Shlomi Vovek, Computer Science student.
 
 b. Project Overview:
