@@ -1,47 +1,46 @@
-# devtools_project
-Final Project In Devtools Course
+Drupal Docker Setup
+A comprehensive solution for setting up, backing up, restoring, and cleaning up a Drupal website using Docker containers.
 
-TL;DR: 
+TL;DR:
 
-    1) Ensure that the scripts have execute permissions (chmod +x scriptname.sh).
-    2) Download the project
-    3) Begin with the "setup.sh" script and then "restore.sh" if you want to load our exsiting data
-
+    Ensure that the scripts have execute permissions (chmod +x scriptname.sh)
+    Download the project
+    Run ./setup.sh to initialize the Docker containers
+    Access your Drupal site at http://localhost:8080
+    Use ./backup.sh for creating backups
+    Use ./restore.sh for restoring from backups
+    Use ./cleanup.sh to remove old backups and clean Docker resources
 
 a. We are Amit Bar-Kama, Software Engineering student and Shlomi Vovek, Computer Science student.
 
-b. Project Overview:
-  
-    This project utilizes Docker to containerize a Drupal website and its MySQL database, creating a portable and reproducible environment.
-    The setup is automated using bash scripts for ease of use. We've included backup and restore functionality to ensure data integrity.
+b. Project Overview
+This project utilizes Docker to containerize a Drupal website and its MySQL database, creating a portable and reproducible environment. The setup is automated using bash scripts for ease of use. It includes backup and restore functionality to ensure data integrity.
    
 c. We devided the work between us, created this project by the instruction and used some help from youtube.com videos and Generative AI tools as well as Docker documentation for its functions, special flags and interfacing with MySQL and Drupal.
 
-d. Technologies Used:
+d. Technologies Used
 
-    Docker: Containerization platform.
-    Drupal: Open-source content management system.
-    MySQL: Database management system.
-    Ubuntu: Operating system.
-    Bash: Scripting language for automation.
-    Git/GitHub: Version control.
-    Discord: Communication and collaboration.
-    Claude.ai: Debugging assistance.
-    Afeka Vlab: Ubuntu Virtual Machine environment.
+    * Docker: Containerization platform
+    * Drupal: Open-source content management system
+    * MySQL: Database management system
+    * Ubuntu: Operating system
+    * Bash: Scripting language for automation
 
-Prerequisites:
+Prerequisites
 
-    An Ubuntu machine (virtual or physical).
-    Basic familiarity with the command line.
+    * Ubuntu machine (virtual or physical)
+    * Basic familiarity with the command line
     
 e. Drupal Website Setup with Docker: User Guide:
 
-    This guide will walk you through setting up a Drupal website using Docker containers on an Ubuntu machine, including initialization, backups, restoration, and cleanup.To use these scripts, you'll need to follow these steps:
+    This guide will walk you through setting up a Drupal website using Docker containers on an Ubuntu machine,
+    including initialization,backups, restoration, and cleanup.To use these scripts, you'll need to follow these steps:
   
   1. Initial Setup (setup.sh):
 
     Open a terminal in the directory containing your project scripts.
     Execute the setup script:
+    
       ./setup.sh
 
     This script will:
@@ -73,31 +72,60 @@ e. Drupal Website Setup with Docker: User Guide:
         Configure your site as needed (themes, modules, content).
     
   2. Backing Up Your Website (backup.sh):
+     Create a backup of your Drupal website by running:
+     
+          ./backup.sh
+When running the backup script, you'll be prompted to choose a backup naming format:
+Standard names (drupal-db-backup.sql.gz, drupal-files-backup.tar.gz)
+Timestamped names (drupal-db-backup-YYYYMMDDHHMMSS.sql.gz, drupal-files-backup-YYYYMMDDHHMMSS.tar.gz)
+Both formats (creates backups with both naming conventions)
 
-    To create a backup of your Drupal database and files, execute the backup script:
-      ./backup.sh
-      
-    This script will:
-    Create a timestamped backup of the MySQL database. Create a timestamped backup of the Drupal files directory. Store the backups in the "backups" directory within your project folder.
+The script will:
+Create a backup of the MySQL database
+Create a backup of the Drupal files
+Store the backups in the "./backups" directory
+Verify the integrity of the backups
+Display a summary of the backup operation
     
   3. Restoring Your Website (restore.sh):
+Restore your website from existing backups:
 
-    To restore your website from backups, execute the restore script with the backup filenames:
-      ./restore.sh drupal-db-backup-YYYYMMDDHHMMSS.sql.gz drupal-files-backup-YYYYMMDDHHMMSS.tar.gz
+    ./restore.sh [database-backup-file] [drupal-files-backup]
+If you run the script without arguments, it will:
 
-    Replace YYYYMMDDHHMMSS with the actual timestamp of your backups.
-If you execute the restore.sh script without arguments, the script will display a list of available backups in the backups directory.
-The script will:
+Display available backups
+Prompt you to choose a backup format:
 
-    Stop the drupal and mysql docker containers. Restore the mysql database from the provided sql backup file. Restore the drupal files from the provided tar.gz file. Start the drupal and mysql docker containers.
-    
+Standard names
+Most recent timestamped backup
+Specify files manually
+The script handles both compressed and uncompressed backup files and provides feedback throughout the restoration process.
+
   4. Cleaning Up (cleanup.sh):
+ To remove old backups and clean up Docker resources, execute the cleanup script:
 
-    To remove old backups and clean up Docker resources, execute the cleanup script:
       ./cleanup.sh
-    
-    This script will:
-    Remove backups older than 7 days from the "backups" directory. Run docker system prune -a to remove unused docker images, containers and networks.
+
+The default retention period is 7 days if not specified.
+The script will prompt you to choose:
+
+The type of backup cleanup:
+
+Remove backups older than X days
+Keep only the most recent N backups
+Remove specific backup file(s)
+Skip backup file cleanup
+
+
+The type of Docker cleanup:
+
+Full cleanup (containers, volumes, and Docker system)
+System cleanup only (keep containers and volumes)
+Skip Docker cleanup entirely
+
+
+
+Warning: The full cleanup option will permanently delete your Drupal website and MySQL database!
     
   5. Automated Backups with Cron:
 
@@ -109,15 +137,16 @@ The script will:
 
     Replace /path/to/your/project/ with the actual path to your project directory. Save and close the crontab file.
     
-f. Important Notes:
+f. Important Notes
 
-    Ensure that the scripts have execute permissions (chmod +x scriptname.sh).
-    Adjust the paths in the scripts and cron job as needed.
-    When moving the project to a new machine, ensure that docker is installed, and then run the setup.sh script.
-    When restoring a database, the database that is being restored to must be empty.
-    When restoring files, make sure that the files directory is empty.
-    The setup.sh script should contain the database credentials that are used by drupal, and mysql.
+Ensure that the scripts have execute permissions (chmod +x scriptname.sh)
+The Drupal website runs on port 8080 by default (http://localhost:8080)
+MySQL uses "my-secret-pw" as the root password (you may want to change this in a production environment)
+When restoring a database, the database being restored to must be empty
+When restoring files, the files directory should be empty
 
-This detailed guide should help you manage your Drupal website effectively using Docker containers and your provided scripts.
+Troubleshooting
 
-   
+If you encounter permission issues, ensure you have appropriate privileges (use sudo if needed)
+Visit http://localhost:8080/update.php in your browser if you restore from an older backup
+Check Docker logs if containers fail to start: docker logs drupal_container or docker logs mysql_container
