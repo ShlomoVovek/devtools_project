@@ -12,7 +12,8 @@ a. We are Amit Bar-Kama, Software Engineering student and Shlomi Vovek, Computer
 
 b. Project Overview:
   
-    This project utilizes Docker to containerize a Drupal website and its MySQL database, creating a portable and reproducible environment. The setup is automated using bash scripts for ease of use. We've included backup and restore functionality to ensure data integrity.
+    This project utilizes Docker to containerize a Drupal website and its MySQL database, creating a portable and reproducible environment.
+    The setup is automated using bash scripts for ease of use. We've included backup and restore functionality to ensure data integrity.
    
 c. We devided the work between us, created this project by the instruction and used some help from youtube.com videos and Generative AI tools as well as Docker documentation for its functions, special flags and interfacing with MySQL and Drupal.
 
