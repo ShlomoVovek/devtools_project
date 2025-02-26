@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: drupal
+      MYSQL_USER: drupaluser
+      MYSQL_PASSWORD: my-secret-pw
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - drupal_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  drupal:
+    image: drupal:latest
+    container_name: drupal_container
+    restart: always
+    ports:
+      - "8080:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DRUPAL_DATABASE_DRIVER: mysql
+      DRUPAL_DATABASE_HOST: db
+      DRUPAL_DATABASE_NAME: drupal
+      DRUPAL_DATABASE_USERNAME: drupaluser
+      DRUPAL_DATABASE_PASSWORD: my-secret-pw
+    volumes:
+      - drupal_data:/var/www/html
+    networks:
+      - drupal_network
+
+volumes:
+  db_data:
+    name: drupal_db_data
+  drupal_data:
+    name: drupal_site_data
+
+networks:
+  drupal_network:
+

@@ -1,0 +1,101 @@
+
+install docker:
+	sudo snap install docker
+	
+install mysql:
+	sudo apt install mysql-server
+	y
+
+run the docker .yaml file:
+	docker-compose up -d
+
+show running container:
+	docker ps
+	
+
+docker containers names:
+	drupal_container
+	mysql_container
+
+
+CONFIGURATION DATA:
+	Database name: drupal
+	Username: drupaluser
+	Password: my-secret-pw
+	Host: 	db
+	Port: 3306
+	
+	
+Site name:
+	The Website Of Shlomi And Amit
+
+Site email address:
+	team5@TheWebsiteOfShlomiAndAmit.com
+	
+Site maintenance account:
+	Username: demoadmin
+	Password: secretpass
+	
+ 
+ Backup:
+	Mysql:
+		docker exec mysql_container sh -c 'exec mysqldump --all-databases -uroot -p"my-secret-pw"' | gzip > my-drupal.backup.sql.gz
+
+	OR (not compressed)
+		docker exec -it mysql_container sh -c 'exec mysqldump --all-databases -uroot -p"my-secret-pw"' > my-drupal.backup.sql
+
+	OR (compressed)
+		docker exec mysql_container sh -c 'exec mysqldump --all-databases -uroot -p"my-secret-pw"' | gzip > my-drupal.backup.sql.gz
+
+	Drupal:
+		docker run --rm --volumes-from drupal_container -v $(pwd):/backup ubuntu tar czvf /backup/drupal_files_backup.tar.gz /var/www/html
+
+Verify:
+	head -n 20 my-drupal.backup.sql
+	gzip -t my-drupal.backup.sql.gz && echo "Backup is valid"
+
+*********NEXT STEPS I DID NOT DO YET**************
+next step is PART 5:
+
+1. Navigate to your docker-compose directory
+	cd /devtools_project/drupal_docker
+
+2. Create the containers and volumes
+	docker compose up -d
+
+3. Stop the services for restoration
+	docker compose down
+
+4. Start just the database container
+	docker compose up -d db
+
+5. Wait for MySQL to be fully ready (important!)
+	echo "Waiting for MySQL to be ready..."
+	sleep 20
+
+6. Import your database backup
+	cd /devtools_project
+	docker exec -i mysql_container mysql -uroot -pmy-secret-pw drupal < my-drupal.backup.sql
+
+# If the above command fails, try this alternative:
+# docker cp my-drupal.backup.sql mysql_container:/tmp/
+# docker exec mysql_container bash -c "mysql -uroot -pmy-secret-pw drupal < /tmp/my-drupal.backup.sql"
+
+7. Restore Drupal files (assuming drupal_files_backup is a directory)
+	docker run --rm \
+	  -v drupal_site_data:/target \
+	  -v /devtools_project/drupal_files_backup:/source \
+	  ubuntu bash -c "cp -a /source/. /target/"
+
+8. Start all services
+	docker compose up -d
+
+9. Fix file permissions
+	docker exec drupal_container chown -R www-data:www-data /var/www/html
+
+
+
+
+
+
+

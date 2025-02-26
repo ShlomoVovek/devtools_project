@@ -1,0 +1,31 @@
+The daily term: Linux
+
+What is Linux? Linux is a Unix-like, open source and community-developed operating system (OS) for computers, servers, mainframes, mobile devices and embedded devices. It is supported on almost every major computer platform, including x86, ARM and SPARC, making it one of the most widely supported operating systems.
+Tags
+
+    Linux
+    linux
+    open source
+    OS
+    os
+    operating system
+
+The daily term: open source
+
+Open source is a term that originally referred to open source software (OSS). Open source software is code that is designed to be publicly accessible—anyone can see, modify, and distribute the code as they see fit.
+
+ The daily term: Firefox 
+ 
+ Mozilla Firefox, or simply Firefox, is a free and open source web browser developed by the Mozilla Foundation and its subsidiary, the Mozilla Corporation. It uses the Gecko rendering engine to display web pages, which implements current and anticipated web standards. Firefox is available for Windows 10 and later versions of Windows, macOS, and Linux. Its unofficial ports are available for various Unix and Unix-like operating systems, including FreeBSD, OpenBSD, NetBSD, and other operating systems, such as reactOS. Firefox is also available for Android and iOS. However, as with all other iOS web browsers, the iOS version uses the WebKit layout engine instead of Gecko due to platform requirements. An optimized version is also available on the Amazon Fire TV as one of the two main browsers available with Amazon's Silk Browser.
+ 
+Tags
+
+    Firefox
+    open source
+    Mozilla
+    browser
+
+
+The daily term: root
+
+root is the user name or account that by default has access to all commands and files on a Linux or other Unix-like operating system. It is also referred to as the root account, root user and the superuser. For root access, the user should use the term 'sudo' in the beginning of the row and then insert the root password.
